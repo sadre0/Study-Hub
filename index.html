@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study Hub</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5fb;color:#192441}
+header{background:linear-gradient(135deg,#1739a6,#4778f5);color:white;padding:25px 18px;border-radius:0 0 24px 24px}
+header h1{margin:0 0 8px;font-size:30px}
+header p{margin:5px 0}
+main{max-width:760px;margin:auto;padding:16px}
+input{width:100%;padding:13px;border:1px solid #ccd5e7;border-radius:12px;font-size:16px;margin:8px 0}
+h2{font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card,.item{background:white;padding:15px;border-radius:14px;box-shadow:0 3px 12px #14264a0d}
+.card h3{margin:0 0 8px;font-size:17px}
+.card p,.item p{color:#66718a;line-height:1.5}
+.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:20px 0}
+button{background:#234bd5;color:white;border:0;border-radius:10px;padding:12px;font-size:15px}
+.item{margin:10px 0}
+a{color:#234bd5;overflow-wrap:anywhere}
+footer{text-align:center;color:#68728a;padding:25px}
+</style>
+</head>
+<body>
+<header>
+<h1>📚 Study Hub</h1>
+<p>आपकी पढ़ाई, एक ही जगह पर</p>
+<p>Your learning, all in one place</p>
+<p>ہر طالب علم کے لیے تعلیمی مرکز</p>
+</header>
+
+<main>
+<input id="search" placeholder="विषय खोजें / Search subjects..." oninput="renderSubjects()">
+
+<h2>📚 हमारे विषय / Our Subjects</h2>
+<div id="subjects" class="grid"></div>
+
+<div class="tabs">
+<button onclick="showSection('notes')">📘 नोट्स / Notes</button>
+<button onclick="showSection('pdf')">📄 PDF सामग्री</button>
+<button onclick="showSection('videos')">🎥 वीडियो / Videos</button>
+<button onclick="showSection('quiz')">📝 क्विज़ / Quiz</button>
+</div>
+
+<section id="content"></section>
+
+<footer>Study Hub © 2026<br>Learn • Practice • Grow</footer>
+</main>
+
+<script>
+const subjects=[
+["हिंदी","Hindi","📕"],
+["अंग्रेज़ी","English","🔤"],
+["गणित","Mathematics","➗"],
+["विज्ञान","Science","🔬"],
+["उर्दू","Urdu","🌙"],
+["संस्कृत","Sanskrit","📜"],
+["सामाजिक विज्ञान","Social Science","🌍"],
+["कंप्यूटर","Computer","💻"]
+];
+
+function renderSubjects(){
+ const q=document.getElementById("search").value.toLowerCase();
+ document.getElementById("subjects").innerHTML=subjects
+ .filter(s=>s.join(" ").toLowerCase().includes(q))
+ .map(s=>`<div class="card"><h3>${s[2]} ${s[0]}</h3><p>${s[1]}</p><button onclick="openSubject('${s[0]}')">खोलें / Open</button></div>`).join("");
+}
+function openSubject(name){
+ document.getElementById("content").innerHTML=
+ `<h2>${name} / अध्ययन सामग्री</h2>
+ <div class="item"><b>नोट्स / Notes</b><p>इस विषय के नोट्स एडमिन द्वारा यहाँ जोड़े जाएँगे।</p></div>
+ <div class="item"><b>PDF सामग्री</b><p>PDF लिंक यहाँ उपलब्ध होगा।</p></div>
+ <div class="item"><b>वीडियो / Videos</b><p>वीडियो लिंक यहाँ उपलब्ध होगा।</p></div>`;
+}
+function showSection(type){
+ const c=document.getElementById("content");
+ if(type==="notes"){
+ c.innerHTML="<h2>📘 नोट्स / Notes</h2>"+subjects.map(s=>`<div class="item"><b>${s[0]} / ${s[1]}</b><p>नोट्स यहाँ जोड़े जाएँगे।</p></div>`).join("");
+ }
+ if(type==="pdf"){
+ c.innerHTML="<h2>📄 PDF सामग्री</h2><div class='item'>अध्ययन PDF के लिंक यहाँ उपलब्ध होंगे।</div>";
+ }
+ if(type==="videos"){
+ c.innerHTML="<h2>🎥 वीडियो पाठ</h2><div class='item'>शैक्षिक वीडियो के लिंक यहाँ उपलब्ध होंगे।</div>";
+ }
+ if(type==="quiz"){
+ c.innerHTML=`<h2>📝 अभ्यास क्विज़</h2>
+ <div class="item"><p>भारत की राजधानी क्या है? / What is the capital of India?</p>
+ <button onclick="document.getElementById('answer').innerText='सही उत्तर: नई दिल्ली / New Delhi'">उत्तर देखें / Show Answer</button>
+ <p id="answer"></p></div>`;
+ }
+}
+renderSubjects();
+showSection("notes");
+</script>
+</body>
+</html>
